@@ -91,7 +91,7 @@ public final class InteractionEvents {
                 }
                 String sl = PersistentDataAPI.getString(im, keyLoc);
                 Location l = GeneralUtils.deserializeLocation(sl);
-                p.teleport(l);
+                p.teleportAsync(l);
                 p.sendMessage(ThemeUtils.SUCCESS + "正在召回!");
                 ItemUtils.setCooldown(i, cooldownName, 300000);
             }
@@ -116,9 +116,10 @@ public final class InteractionEvents {
             if (p.getWorld().getBlockAt(location).getType() == Material.AIR
                 && Slimefun.getProtectionManager().hasPermission(p, location, Interaction.PLACE_BLOCK)
             ) {
-                p.teleport(location);
-                p.getWorld().playEffect(friend.getPlayer().getLocation(), Effect.ENDEREYE_LAUNCH, 10);
-                ItemUtils.setCooldown(i, "NOCLIP", 300000);
+                p.teleportAsync(location).thenRun(() -> {
+                    p.getWorld().playEffect(friend.getPlayer().getLocation(), Effect.ENDEREYE_LAUNCH, 10);
+                });
+              ItemUtils.setCooldown(i, "NOCLIP", 300000);
             } else {
                 p.sendMessage(ThemeUtils.WARNING + "无法传送，请稍后再试");
             }
@@ -180,7 +181,7 @@ public final class InteractionEvents {
             String cdName = "kingsman";
             if (!ItemUtils.onCooldown(i, cdName)) {
                 KingsmanSpam task = new KingsmanSpam(p, 10);
-                task.runTaskTimer(SlimeTinker.getInstance(), 0, 20);
+                task.runTaskTimer(SlimeTinker.getInstance(), p, 0, 20);
                 ItemUtils.setCooldown(i, cdName, 20 * 60000L);
             } else {
                 p.sendMessage(ThemeUtils.WARNING + "王牌特工技能冷却中");

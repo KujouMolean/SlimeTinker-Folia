@@ -1,9 +1,9 @@
 package io.github.sefiraat.slimetinker.runnables;
 
+import com.molean.folia.adapter.FoliaRunnable;
 import io.github.sefiraat.slimetinker.SlimeTinker;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class FirstTick extends BukkitRunnable {
+public class FirstTick extends FoliaRunnable {
 
     @Override
     public void run() {

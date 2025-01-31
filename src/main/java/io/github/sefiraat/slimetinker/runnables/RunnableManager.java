@@ -1,5 +1,6 @@
 package io.github.sefiraat.slimetinker.runnables;
 
+import com.molean.folia.adapter.Folia;
 import io.github.sefiraat.slimetinker.SlimeTinker;
 
 public class RunnableManager {
@@ -13,15 +14,16 @@ public class RunnableManager {
         final SlimeTinker plugin = SlimeTinker.getInstance();
 
         this.effectTick = new EffectTick();
-        effectTick.runTaskTimer(plugin, 0, SlimeTinker.RUNNABLE_TICK_RATE);
+        effectTick.runTaskTimerAsynchronously(plugin, 0, SlimeTinker.RUNNABLE_TICK_RATE);
 
         this.trailTick = new TrailTick();
-        trailTick.runTaskTimer(plugin, 0, 5);
+        trailTick.runTaskTimerAsynchronously(plugin, 0, 5);
 
         this.armourRemove = new ArmourRemove();
-        armourRemove.runTaskTimer(plugin, 0, SlimeTinker.RUNNABLE_TICK_RATE);
+        armourRemove.runTaskTimerAsynchronously(plugin, 0, SlimeTinker.RUNNABLE_TICK_RATE);
 
         this.firstTick = new FirstTick();
-        firstTick.runTaskLater(plugin, 1);
+
+        Folia.runAtFirstTick(plugin, firstTick::run);
     }
 }

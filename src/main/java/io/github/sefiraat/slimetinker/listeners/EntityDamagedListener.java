@@ -63,7 +63,7 @@ public class EntityDamagedListener implements Listener {
                 friend.setSegganesson(0);
                 friend.setSegganessonDamage(0);
                 Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(50, 120, 200), 5);
-                e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 50, 1, 1, 1, 0.5, dustOptions, true);
+                e.getWorld().spawnParticle(Particle.DUST, e.getLocation(), 50, 1, 1, 1, 0.5, dustOptions, true);
             }
 
             if (friend.getCharged() >= 2) { // Special case for Charged - event is dependant on two materials, consumers up a value to trigger this
@@ -71,8 +71,8 @@ public class EntityDamagedListener implements Listener {
                 if (rnd == 1) {
                     friend.setDamageMod(friend.getDamageMod() * 3);
                     Particle.DustOptions dustOptions = new Particle.DustOptions(Color.YELLOW, 5);
-                    e.getWorld().spawnParticle(Particle.REDSTONE, e.getLocation(), 50, 1, 1, 1, 0.5, dustOptions, true);
-                    PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOW, 40, 99);
+                    e.getWorld().spawnParticle(Particle.DUST, e.getLocation(), 50, 1, 1, 1, 0.5, dustOptions, true);
+                    PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOWNESS, 40, 99);
                     e.addPotionEffect(potionEffect);
                 }
             }

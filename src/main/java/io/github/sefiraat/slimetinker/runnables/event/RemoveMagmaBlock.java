@@ -1,10 +1,10 @@
 package io.github.sefiraat.slimetinker.runnables.event;
 
+import com.molean.folia.adapter.FoliaRunnable;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class RemoveMagmaBlock extends BukkitRunnable {
+public class RemoveMagmaBlock extends FoliaRunnable {
 
     private final Block block;
 

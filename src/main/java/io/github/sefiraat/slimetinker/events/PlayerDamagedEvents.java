@@ -130,11 +130,11 @@ public final class PlayerDamagedEvents {
                 p.setHealth(1);
                 friend.setDamageMod(0);
                 Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(20, 20, 20), 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 30, 3, 3, 3, 1, dustOptions);
+                p.getWorld().spawnParticle(Particle.DUST, p.getLocation(), 30, 3, 3, 3, 1, dustOptions);
                 Particle.DustOptions dustOptions2 = new Particle.DustOptions(Color.fromRGB(1, 1, 1), 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 30, 3, 3, 3, 1, dustOptions2);
+                p.getWorld().spawnParticle(Particle.DUST, p.getLocation(), 30, 3, 3, 3, 1, dustOptions2);
                 Particle.DustOptions dustOptions3 = new Particle.DustOptions(Color.fromRGB(40, 40, 40), 2);
-                p.getWorld().spawnParticle(Particle.REDSTONE, p.getLocation(), 30, 3, 3, 3, 1, dustOptions3);
+                p.getWorld().spawnParticle(Particle.DUST, p.getLocation(), 30, 3, 3, 3, 1, dustOptions3);
                 p.sendMessage(ThemeUtils.WARNING + "保护技能已使你免于死亡。现在保护技能进入冷却了,小心!");
                 ItemUtils.setCooldown(i, "PROTECTIVE", 1200000);
             } else {
@@ -226,7 +226,7 @@ public final class PlayerDamagedEvents {
 
     public static void linksAluBronze(EventFriend friend) {
         Player p = friend.getPlayer();
-        if (p.getHealth() <= (p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 2)) {
+        if (p.getHealth() <= (p.getAttribute(Attribute.MAX_HEALTH).getValue() / 2)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 100, 2));
         }
     }
@@ -240,8 +240,8 @@ public final class PlayerDamagedEvents {
             Player p = friend.getPlayer();
             Location location = p.getLocation().clone().add(rndX, rndY, rndZ);
             if (p.getWorld().getBlockAt(location).getType() == Material.AIR) {
-                p.teleport(location);
-                p.getWorld().playEffect(friend.getPlayer().getLocation(), Effect.ENDEREYE_LAUNCH, 10);
+                p.teleportAsync(location);
+                p.getWorld().playEffect(friend.getPlayer().getLocation(), Effect.ENDER_SIGNAL, 10);
             }
         }
     }
@@ -265,7 +265,7 @@ public final class PlayerDamagedEvents {
 
     public static void linksBrass(EventFriend friend) {
         Player p = friend.getPlayer();
-        if (p.getHealth() <= (p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 2)) {
+        if (p.getHealth() <= (p.getAttribute(Attribute.MAX_HEALTH).getValue() / 2)) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 2));
         }
     }
@@ -330,7 +330,7 @@ public final class PlayerDamagedEvents {
         if (friend.getCause() == EntityDamageEvent.DamageCause.CONTACT) {
             Player p = friend.getPlayer();
             friend.setDamageMod(0);
-            p.setHealth(Math.min(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(), p.getHealth() + friend.getInitialDamage()));
+            p.setHealth(Math.min(p.getAttribute(Attribute.MAX_HEALTH).getValue(), p.getHealth() + friend.getInitialDamage()));
         }
     }
 
@@ -351,7 +351,7 @@ public final class PlayerDamagedEvents {
                 w.setTarget((LivingEntity) friend.getDamagingEntity());
             }
             RemoveWolf task = new RemoveWolf(w);
-            task.runTaskLater(SlimeTinker.getInstance(), 500);
+            task.runTaskLater(SlimeTinker.getInstance(), w, 500);
         }
     }
 
@@ -393,7 +393,7 @@ public final class PlayerDamagedEvents {
             friend.setCancelEvent(true);
             LivingEntity l = (LivingEntity) friend.getDamagingEntity();
             l.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 1));
-            l.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, l.getLocation(), 3, 0.2, 0.2, 0.2);
+            l.getWorld().spawnParticle(Particle.FIREWORK, l.getLocation(), 3, 0.2, 0.2, 0.2);
             l.damage(friend.getInitialDamage(), friend.getPlayer());
         }
     }
@@ -532,8 +532,10 @@ public final class PlayerDamagedEvents {
         if (friend.getCause() == EntityDamageEvent.DamageCause.VOID) {
             friend.setCancelEvent(true);
             Player player = friend.getPlayer();
-            player.teleport(friend.getPlayer().getLocation().add(0, 200, 0));
-            player.setNoDamageTicks(100);
+            player.teleportAsync(friend.getPlayer().getLocation().add(0, 200, 0)).thenRun(() -> {
+                    player.setNoDamageTicks(100);
+            });
+
         }
     }
 
@@ -551,7 +553,7 @@ public final class PlayerDamagedEvents {
         ) {
             Player p = friend.getPlayer();
             friend.setCancelEvent(true);
-            p.setHealth(Math.min(p.getHealth() + friend.getInitialDamage(), p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+            p.setHealth(Math.min(p.getHealth() + friend.getInitialDamage(), p.getAttribute(Attribute.MAX_HEALTH).getValue()));
         }
     }
 
@@ -598,7 +600,7 @@ public final class PlayerDamagedEvents {
         if (GeneralUtils.testChance(5, 100)) {
             Player p = friend.getPlayer();
             friend.setCancelEvent(true);
-            p.setHealth(Math.min(p.getHealth() + friend.getInitialDamage(), p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+            p.setHealth(Math.min(p.getHealth() + friend.getInitialDamage(), p.getAttribute(Attribute.MAX_HEALTH).getValue()));
         }
     }
 
@@ -622,16 +624,16 @@ public final class PlayerDamagedEvents {
         if (GeneralUtils.testChance(1, 5)) {
             Player p = friend.getPlayer();
             PotionEffect speed = p.hasPotionEffect(PotionEffectType.SPEED) ? p.getPotionEffect(PotionEffectType.SPEED) : null;
-            PotionEffect haste = p.hasPotionEffect(PotionEffectType.FAST_DIGGING) ? p.getPotionEffect(PotionEffectType.FAST_DIGGING) : null;
+            PotionEffect haste = p.hasPotionEffect(PotionEffectType.HASTE) ? p.getPotionEffect(PotionEffectType.HASTE) : null;
             if (speed == null) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
             } else {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, Math.min(speed.getAmplifier() + 1, 9)));
             }
             if (haste == null) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 200, 1));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 200, 1));
             } else {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 200, Math.min(haste.getAmplifier() + 2, 19)));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 200, Math.min(haste.getAmplifier() + 2, 19)));
             }
         }
     }
@@ -656,8 +658,8 @@ public final class PlayerDamagedEvents {
                 Player p = friend.getPlayer();
                 Location pl = p.getLocation();
                 Location el = e.getLocation();
-                p.teleport(el);
-                e.teleport(pl);
+                p.teleportAsync(el);
+                e.teleportAsync(pl);
             }
         }
     }

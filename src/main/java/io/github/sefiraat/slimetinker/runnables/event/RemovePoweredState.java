@@ -1,13 +1,13 @@
 package io.github.sefiraat.slimetinker.runnables.event;
 
+import com.molean.folia.adapter.FoliaRunnable;
 import io.github.sefiraat.slimetinker.utils.BlockUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class RemovePoweredState extends BukkitRunnable {
+public class RemovePoweredState extends FoliaRunnable {
 
     private final Block block;
     private final Player player;

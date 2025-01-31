@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.sefiraat</groupId>
     <artifactId>SlimeTinker</artifactId>
-    <version>MODIFIED</version>
+    <version>Folia</version>
 
     <name>SlimeTinker</name>
     <description>Slimefun4 Addon SlimeTinker</description>
@@ -167,38 +167,53 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>
-                <configuration>
-                    <minimizeJar>true</minimizeJar>
-                    <relocations>
-                        <relocation>
-                            <pattern>io.github.mooy1.infinitylib</pattern>
-                            <shadedPattern>io.github.sefiraat.slimetinker.infinitylib</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>io.github.sefiraat.slimetinker.bstats</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>io.github.sefiraat.slimetinker.acf</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*</exclude>
-                                <exclude>minecraft.*</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.github.mooy1.infinitylib</pattern>
+                                    <shadedPattern>io.github.sefiraat.slimetinker.infinitylib</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>io.github.sefiraat.slimetinker.bstats</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.commands</pattern>
+                                    <shadedPattern>io.github.sefiraat.slimetinker.acf</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*</exclude>
+                                        <exclude>minecraft.*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.bstats:bstats-bukkit</include>
+                                    <include>org.bstats:bstats-base</include>
+                                    <include>io.github.mooy1:InfinityLib</include>
+                                    <include>co.aikar:acf-paper</include>
+                                </includes>
+<!--                                <excludes>-->
+<!--                                    <exclude>com.molean:FoliaAdapter</exclude>-->
+<!--                                    <exclude>io.papermc.paper:paper-api</exclude>-->
+<!--                                    <exclude>com.github.slimefun:Slimefun</exclude>-->
+<!--                                    <exclude>net.guizhanss:GuizhanLibPlugin</exclude>-->
+<!--                                    <exclude>io.github.sefiraat:Networks</exclude>-->
+<!--                                </excludes>-->
+                            </artifactSet>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -227,27 +242,34 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.github.SlimefunGuguProject</groupId>
-            <artifactId>Slimefun4</artifactId>
-            <version>2024.3.1</version>
+            <groupId>com.molean</groupId>
+            <artifactId>FoliaAdapter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>dev</classifier>
+
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.slimefun</groupId>
+            <artifactId>Slimefun</artifactId>
+            <version>UNOFFICIAL</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.guizhanss</groupId>
             <artifactId>GuizhanLibPlugin</artifactId>
-            <version>1.4.0</version>
+            <version>2.2.0-Folia</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.SlimefunGuguProject</groupId>
+            <groupId>io.github.mooy1</groupId>
             <artifactId>InfinityLib</artifactId>
-            <version>1.3.9</version>
+            <version>1.3.10-Folia</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -277,9 +299,9 @@
             <version>0.5.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>dev.sefiraat</groupId>
-            <artifactId>networks</artifactId>
-            <version>1.0.0</version>
+            <groupId>io.github.sefiraat</groupId>
+            <artifactId>Networks</artifactId>
+            <version>MODIFIED-Folia</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

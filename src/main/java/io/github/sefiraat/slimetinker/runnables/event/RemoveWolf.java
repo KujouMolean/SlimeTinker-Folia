@@ -1,9 +1,9 @@
 package io.github.sefiraat.slimetinker.runnables.event;
 
+import com.molean.folia.adapter.FoliaRunnable;
 import org.bukkit.entity.Wolf;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class RemoveWolf extends BukkitRunnable {
+public class RemoveWolf extends FoliaRunnable {
 
     private final Wolf wolf;
 
